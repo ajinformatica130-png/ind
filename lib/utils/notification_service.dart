@@ -1,14 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:customer/model/driver_user_model.dart';
-import 'package:customer/model/intercity_order_model.dart';
-import 'package:customer/model/order_model.dart';
-import 'package:customer/model/user_model.dart';
-import 'package:customer/ui/chat_screen/chat_screen.dart';
-import 'package:customer/ui/intercityOrders/intercity_payment_order_screen.dart';
-import 'package:customer/ui/orders/payment_order_screen.dart';
-import 'package:customer/utils/fire_store_utils.dart';
+import 'package:tochegandodelivery/model/driver_user_model.dart';
+import 'package:tochegandodelivery/model/intercity_order_model.dart';
+import 'package:tochegandodelivery/model/order_model.dart';
+import 'package:tochegandodelivery/model/user_model.dart';
+import 'package:tochegandodelivery/ui/chat_screen/chat_screen.dart';
+import 'package:tochegandodelivery/ui/intercityOrders/intercity_payment_order_screen.dart';
+import 'package:tochegandodelivery/ui/orders/payment_order_screen.dart';
+import 'package:tochegandodelivery/utils/fire_store_utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -67,14 +67,14 @@ class NotificationService {
       if (message.notification != null) {
         log(message.notification.toString());
         if (message.data['type'] == "chat") {
-          UserModel? customer = await FireStoreUtils.getUserProfile(message.data['customerId']);
+          UserModel? tochegandodelivery = await FireStoreUtils.getUserProfile(message.data['tochegandodeliveryId']);
           DriverUserModel? driver = await FireStoreUtils.getDriver(message.data['driverId']);
 
           Get.to(ChatScreens(
             driverId: driver!.id,
-            customerId: customer!.id,
-            customerName: customer.fullName,
-            customerProfileImage: customer.profilePic,
+            tochegandodeliveryId: tochegandodelivery!.id,
+            tochegandodeliveryName: tochegandodelivery.fullName,
+            tochegandodeliveryProfileImage: tochegandodelivery.profilePic,
             driverName: driver.fullName,
             driverProfileImage: driver.profilePic,
             orderId: message.data['orderId'],
@@ -93,7 +93,7 @@ class NotificationService {
         }
       }
     });
-    await FirebaseMessaging.instance.subscribeToTopic("goRide_customer");
+    await FirebaseMessaging.instance.subscribeToTopic("goRide_tochegandodelivery");
 
   }
 
@@ -110,7 +110,7 @@ class NotificationService {
 
       AndroidNotificationChannel channel = const AndroidNotificationChannel(
         '0',
-        'goRide-customer',
+        'goRide-tochegandodelivery',
         description: 'Show QuickLAI Notification',
         importance: Importance.max,
       );
